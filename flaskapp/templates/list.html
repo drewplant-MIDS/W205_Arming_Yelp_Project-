@@ -1,0 +1,11 @@
+<h3>category</h3>
+    <table>
+        {%- for violations in category %}
+            <tr>
+                <td>{{ violations.busid }}</td>
+                <td>{{ violations.busname }}</td>
+            </tr>
+        {%- endfor %}
+    </table>
+
+

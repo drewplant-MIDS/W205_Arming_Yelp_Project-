@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<!--
+Created using JS Bin
+http://jsbin.com
+
+Copyright (c) 2015 by yiransheng (http://jsbin.com/pefono/20/edit)
+
+Released under the MIT license: http://jsbin.mit-license.org
+-->
+<meta name="robots" content="noindex">
+<html>
+  <head>
+    <link href="http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.rawgit.com/lodash/lodash/3.0.1/lodash.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-animate.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-aria.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular-messages.min.js"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.js"></script>
+    <link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/angular_material/1.0.0/angular-material.min.css">
+  </head>
+  <meta charset="utf-8">
+  <title>W205 Yelp</title>
+  <style id="jsbin-css">
+.progressLineardemoBasicUsage body {
+
+  padding: 20px; }
+
+.progressLineardemoBasicUsage h4 {
+
+  margin: 10px 0; }
+
+.progressLineardemoBasicUsage md-progress-linear {
+
+  padding-top: 10px;
+
+  margin-bottom: 20px; }
+
+.progressLineardemoBasicUsage #loaders > md-switch {
+
+  margin: 0;
+
+  margin-left: 10px;
+
+  margin-top: -10px; }
+
+.progressLineardemoBasicUsage #loaders > h5 {
+
+  margin-top: 0; }
+
+.progressLineardemoBasicUsage #loaders > p {
+
+  margin-right: 20px;
+
+  margin-bottom: 24px; }
+
+.progressLineardemoBasicUsage p.small {
+
+  font-size: 0.8em;
+
+  margin-top: -18px; }
+
+.progressLineardemoBasicUsage hr {
+
+  width: 100%;
+
+  margin-top: 20px;
+
+  border-color: rgba(221, 221, 177, 0.1); }
+
+.progressLineardemoBasicUsage p.small > code {
+
+  font-size: 0.8em; }
+
+.progressLineardemoBasicUsage .visible {
+
+  opacity: 0;
+
+  border: 2px solid white !important; }
+
+.progressLineardemoBasicUsage .container {
+
+  display: block;
+
+  position: relative;
+
+  height: 100%;
+
+  width: 100%;
+
+  border: 2px solid #aad1f9;
+
+  transition: opacity  0.1s linear;
+
+  border-top: 0px; }
+
+.progressLineardemoBasicUsage .bottom-block {
+
+  display: block;
+
+  position: relative;
+
+  background-color: rgba(255, 235, 169, 0.25);
+
+  height: 85px;
+
+  width: 100%; }
+
+.progressLineardemoBasicUsage .bottom-block > span {
+
+  display: inline-block;
+
+  margin-top: 10px;
+
+  padding: 25px;
+
+  font-size: 0.9em; }
+</style>
+</head>
+  <body ng-app="hns">
+    <div ng-controller="mainCtrl" layout="column" ng-cloak>
+      <md-toolbar class="md-warn">
+        <div class="md-toolbar-tools">
+          <h2 class="md-flex">Yelp Search</h2>
+        </div>
+      </md-toolbar>
+      <md-content flex layout-padding>
+        <div>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Query Business For Violation</label>
+            <input ng-model="query.violationTerm" />
+          </md-input-container>
+          <md-input-container class="md-block" flex-gt-xs>
+            <md-button md-no-ink class="md-raised md-primary" ng-click="queryViolations(query.violationTerm)">Search</md-button>
+          </md-input-container>
+        </div>
+        <md-list>
+          <md-list-item class="md-2-line" ng-repeat="buz in busViolation">
+            <p ng-repeat="line in buz">{{ line }}</p>
+          </md-list-item>
+        </md-list>
+        <md-list>
+        <md-subheader class="md-no-sticky">Current Top Stories</md-subheader>
+        <form ng-submit="submit()" ng-cloak>
+          </md-list-item>
+          <md-radio-group ng-model="data.selected">
+            <div ng-repeat="item in tops">
+              <md-radio-button  value="{{ item.id }}"><a href="{{ item.url }}">{{ item.title }}</a></md-radio-button>
+              <p>{{ item.comment }}</p>
+            </div>
+            <md-radio-button  value="-1">Query Words</md-radio-button>
+          </md-radio-group>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Positive (+)</label>
+            <input ng-model="data.pos" />
+          </md-input-container>
+          <md-input-container class="md-block" flex-gt-xs>
+            <label>Negative (-)</label>
+            <input ng-model="data.neg" />
+          </md-input-container>
+          <md-button md-no-ink class="md-raised md-primary" ng-click="submit()">Search</md-button>
+        </form>
+        <div class="container">
+          <md-progress-linear ng-show="loading" md-mode="indeterminate"></md-progress-linear>
+          <md-list ng-cloak ng-hide="loading">
+            <md-list-item ng-repeat="item in results" class="secondary-button-padding">
+              <p>{{ item.title || item.word }} ({{ item.sim }})</p>
+              <md-button class="md-secondary" ng-click="go(item.id)">Visit</md-button>
+            </md-list-item>
+          </md-list>
+          <p ng-show="empty === true">Nothing Found.</p>
+        </div>
+      </md-content>
+    </div>
+    </div>
+  <script id="jsbin-javascript">
+angular.module('hns', ['ngMaterial']);
+
+
+
+angular.module('hns')
+
+.controller('mainCtrl', function($scope, $http, $q) {
+
+   $scope.queryBusiness = function(query) {
+
+     return $http.get('50.23.84.234:5000/api/similar', {
+
+       params : {
+
+         data : JSON.stringify(query)
+
+       },
+
+       headers : {
+
+         'Authorization' : 'secret_key_not_really'
+
+       }
+
+     }).then(function(res) {
+
+       var buz = res.data.data;
+
+     });
+
+   };
+
+   $scope.queryViolations = function(term) {
+
+     if(!term) return;
+
+     return $http.get('http://52.70.227.156:8080/api/query', {
+
+       params : {
+
+         data : JSON.stringify({ term: term })
+
+       },
+
+       headers : {
+
+         'Accept' : 'application/json'
+
+       }
+
+     }).then(function(res) {
+
+       var buz = res.data.data;
+
+       $scope.busViolation = buz;
+
+     });
+
+   };
+
+  
+
+   $scope.query = {};
+
+   
+
+});
+</script>
+</body>
+</html>
