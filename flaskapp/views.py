@@ -1,7 +1,6 @@
 from flaskapp import app,Business,loadSession
 from flask import render_template,request,jsonify,abort,make_response, current_app, Response
 from models import inspections,Violation,db
-#import models
 import json
 
 from Query import query
@@ -54,19 +53,11 @@ def crossdomain(origin=None, methods=None, headers=None,
 
 session = loadSession()
 
-@app.route('/countme/<input_str>')
-def count_me(input_str):
-    a = "Hello " + input_str + "!!!"
-    return a
-
 @app.route('/querydb')
 def list_all():
     return render_template(
     'list.html',
     category = session.query(Business).all())                                            
-
-    #violationa=db.session.query(Violation).all())
-    #violationa=models.Violation.query.limit(1).all()
 
 # Define a route for the default URL, which loads the form                                          
 @app.route('/')
@@ -80,9 +71,7 @@ def form():
 def hello():      
     name=request.form['yourname']
     email=request.form['youremail']
-    #if(name=="Vamsi"):
     return render_template('form_action.html', name=name, email=email)  
-
 
 @app.route('/app', methods=['GET'])
 def webapp():      
