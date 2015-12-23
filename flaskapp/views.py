@@ -1,6 +1,5 @@
 from flaskapp import app,Business,loadSession
 from flask import render_template,request,jsonify,abort,make_response, current_app, Response
-from models import inspections,Violation,db
 import json
 
 from Query import query
