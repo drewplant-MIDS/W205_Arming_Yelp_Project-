@@ -1,0 +1,31 @@
+<html>
+        <head>
+                    <title>W205-YELP</title>
+                            <link rel=stylesheet type=text/css href="{{ url_for('static', filename='style.css') }}">
+                                </head>
+                                    <body>
+                                                <div id="container">
+                                                                <div class="title">
+                                                                                    <h1>Insights from Yelp</h1>
+                                                                                                </div>
+                                                                                                            <div id="content">
+                                                                                                                                <form method="post" action="{{ url_for('hello') }}">
+                                                                                                                                                      <label for="yourname">Enter the name of a restaurant</label>
+                                                                                                                                                                        <input type="text" name="yourname" /><br />
+                                                                                                                                                                                          <label for="youremail">Please the name of the city in which the restaurant is located</label>
+                                                                                                                                                                                                            <input type="text" name="youremail" /><br />
+                                                                                                                                                                                                                              <input type="submit" />
+                                                                                                                                                                                                                                              </form>
+                                                                                                                                                                                                                                                          </div>
+                                                                                                                                                                                                                                                                      <div class="title">
+                                                                                                                                                                                                                                                                                          <h1>Flask code</h1>
+                                                                                                                                                                                                                                                                                                      </div>
+                                                                                                                                                                                                                                                                                                                      <code><pre>
+@app.route('/')
+def form():
+    return render_template('form_submit.html')
+                </pre></code>
+                                                                                                                                                                                                                                                                                                                  </div>
+                                                                                                                                                                                                                                                                                                                          </div>
+                                                                                                                                                                                                                                                                                                                              </body>
+                                                                                                                                                                                                                                                                                                                          </html>
