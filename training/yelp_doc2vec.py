@@ -52,7 +52,7 @@ def train_pv_dm(corpus, alpha=0.025, batch_size=long(1e5)):
 
 def train_pv_dbow(corpus, alpha=0.025):
     model = Word2Vec(size=100, alpha=alpha, hs=0, negative=8) 
-    dd2v = DistDoc2VecFast(model, alpha=alpha, num_iterations=1, learn_words=True, learn_hidden=True) 
+    dd2v = DistDoc2VecFast(model, alpha=alpha, num_iterations=50, learn_words=True, learn_hidden=True) 
     dd2v.build_vocab_from_rdd(corpus.map(lambda d: d.words))
     print "** done building vocab of size %d **" % len(model.vocab)
     corpus_kv = corpus.map(lambda d: (d.tags[0], d.words)) 
