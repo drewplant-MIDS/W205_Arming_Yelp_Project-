@@ -1,4 +1,5 @@
-# W205_Arming_Yelp_Project-
+# W205 Arming Yelp Project
+
 Final Project for W205 - Yiran Sheng, Vamsi Sakhamuri, Drew Plant
 
 ## Serving Layer
